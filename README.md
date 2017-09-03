@@ -1,6 +1,6 @@
 MuGo: A minimalist Go engine modeled after AlphaGo
 ==================================================
-hello
+
 This is a pure Python implementation of a neural-network based Go AI, using TensorFlow.
 
 Currently, the AI consists solely of a policy network, trained using supervised learning. I have implemented Monte Carlo Tree Search, but the simulations are too slow, due to being written in Python. I am hoping to bypass this issue entirely by replacing the simulations with a value network which will take one NN evaluation. (After all, random simulations are but a crude approximation to a value function, so if you have a good enough value function, you won't need a playout...)
