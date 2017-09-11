@@ -6,8 +6,7 @@ import random
 import re
 import sys
 import time
-
-from gtp_wrapper import make_gtp_instance
+from gtp_wrapper import begin_game
 from load_data_sets import DataSet, parse_data_sets
 from policy import PolicyNetwork
 
@@ -21,25 +20,14 @@ def timer(message):
     print("%s: %.3f" % (message, (tock - tick)))
 
 
-def gtp(strategy, read_file=None):
-    engine = make_gtp_instance(strategy, read_file)
-    if engine is None:
-        sys.stderr.write("Unknown strategy")
-        sys.exit()
-    sys.stderr.write("GTP engine ready\n")
-    sys.stderr.flush()
-    while not engine.disconnect:
-        inpt = input()
-        # handle either single lines at a time
-        # or multiple commands separated by '\n'
-        try:
-            cmd_list = inpt.split("\n")
-        except:
-            cmd_list = [inpt]
-        for cmd in cmd_list:
-            engine_reply = engine.send(cmd)
-            sys.stdout.write(engine_reply)
-            sys.stdout.flush()
+def blokus(read_file=None):
+    begin_game(read_file)
+    # engine = make_gtp_instance(read_file)
+    #//if engine is None:
+    ##//    sys.stderr.write("Unknown strategy")
+    #//    sys.exit()
+    #sys.stderr.write("GTP engine ready\n")
+    #sys.stderr.flush()
 
 def preprocess(*data_sets, processed_dir="processed_data"):
     processed_dir = os.path.join(os.getcwd(), processed_dir)
@@ -89,8 +77,6 @@ def train(processed_dir, save_file=None, epochs=10, logdir=None, checkpoint_freq
                 with timer("test set evaluation"):
                     n.check_accuracy(test_dataset)
                 last_save_checkpoint = n.get_global_step()
-
-
 
 parser = argparse.ArgumentParser()
 argh.add_commands(parser, [gtp, preprocess, train])
