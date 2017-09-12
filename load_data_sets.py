@@ -19,8 +19,8 @@ def make_onehot(coords):
     num_positions = len(coords)
     output = np.zeros([num_positions, go.N ** 2], dtype=np.uint8)
     for i, coord in enumerate(coords):
-        output[i, utils.outputflatten_coords(coord)] = 1
-    return
+        output[i, utils.flatten_coords(coord)] = 1
+    return output
 
 def find_sgf_files(*dataset_dirs):
     for dataset_dir in dataset_dirs:

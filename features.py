@@ -45,7 +45,7 @@ def extract_features(position, features=DEFAULT_FEATURES):
 
 def bulk_extract_features(positions, features=DEFAULT_FEATURES):
     num_positions = len(positions)
-    num_planes = sum(f.planes for f in features)
+    num_planes = 3
     output = np.zeros([num_positions, go.N, go.N, num_planes], dtype=np.uint8)
     for i, pos in enumerate(positions):
         output[i] = extract_features(pos, features=features)

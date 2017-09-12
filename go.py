@@ -14,7 +14,7 @@ import numpy as np
 
 # Represent a board as a numpy array, with 0 empty, 1 is black, -1 is white.
 # This means that swapping colors is as simple as multiplying array by -1.
-WHITE, EMPTY, BLACK,UNKNOW = range(-1, 2)
+WHITE, EMPTY, BLACK, UNKNOW = range(-1, 3)
 
 class PlayerMove(namedtuple('PlayerMove', ['color', 'move'])): pass
 
@@ -111,8 +111,8 @@ class Position():
             return pos
 
         place_stones(pos.board, color, [c])
-        captured_stones = pos.add_stone(color, c)
-        place_stones(pos.board, EMPTY, captured_stones)
+        #captured_stones = pos.add_stone(color, c)
+        #place_stones(pos.board, EMPTY, captured_stones)
         opp_color = color * -1
         pos.n += 1
         pos.recent += (PlayerMove(color, c),)

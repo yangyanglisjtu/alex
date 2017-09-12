@@ -12,7 +12,7 @@ from policy import PolicyNetwork
 
 TRAINING_CHUNK_RE = re.compile(r"train\d+\.chunk.gz")
 
-@contextmanager
+
 def timer(message):
     tick = time.time()
     yield
@@ -78,8 +78,9 @@ def train(processed_dir, save_file=None, epochs=10, logdir=None, checkpoint_freq
                     n.check_accuracy(test_dataset)
                 last_save_checkpoint = n.get_global_step()
 
-parser = argparse.ArgumentParser()
-argh.add_commands(parser, [gtp, preprocess, train])
+preprocess('data/kgs-data')
+#parser = argparse.ArgumentParser()
+#argh.add_commands(parser, [blokus,preprocess, train])
 
-if __name__ == '__main__':
-    argh.dispatch(parser)
+#if __name__ == '__main__':
+#    argh.dispatch(parser)

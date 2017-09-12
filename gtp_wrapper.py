@@ -58,4 +58,5 @@ def begin_game(read_file):
     n = PolicyNetwork(use_cpu=True)
     n.initialize_variables(read_file)
     GreedyPolicyPlayer(n)
+    return
 
