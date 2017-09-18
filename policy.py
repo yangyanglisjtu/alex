@@ -36,7 +36,8 @@ EPSILON = 1e-35
 
 class PolicyNetwork(object):
     def __init__(self, k=128, num_int_conv_layers=11, use_cpu=False):
-        self.num_input_planes = sum(f.planes for f in features.DEFAULT_FEATURES)
+        self.num_input_planes = 3
+        #sum(f.planes for f in features.DEFAULT_FEATURES)
         self.k = k
         self.num_int_conv_layers = num_int_conv_layers
         self.test_summary_writer = None
@@ -98,16 +99,16 @@ class PolicyNetwork(object):
         b_conv_final = tf.Variable(tf.constant(0, shape=[go.N ** 2], dtype=tf.float32), name="b_conv_final")
         h_conv_final = _conv2d(h_conv_intermediate[-1], W_conv_final)
 
-        output = tf.nn.softmax(tf.reshape(h_conv_final, [-1, go.N ** 2]) + b_conv_final)
-        logits = tf.reshape(h_conv_final, [-1, go.N ** 2]) + b_conv_final
+        output = tf.nn.sigmoid(tf.reshape(h_conv_final, [-1, go.N ** 2]) + b_conv_final)
+        #logits = tf.reshape(h_conv_final, [-1, go.N ** 2]) + b_conv_final
 
-        log_likelihood_cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=y))
-
+        #log_likelihood_cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=y))
+        log_likelihood_cost = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=output, labels=y))
         # AdamOptimizer is faster at start but gets really spiky after 2-3 million steps.
         # train_step = tf.train.AdamOptimizer(1e-4).minimize(log_likelihood_cost, global_step=global_step)
         learning_rate = tf.train.exponential_decay(1e-2, global_step, 4 * 10 ** 6, 0.5)
         train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(log_likelihood_cost, global_step=global_step)
-        was_correct = tf.equal(tf.argmax(logits, 1), tf.argmax(y, 1))
+        was_correct = tf.equal(tf.argmax(output, 1), tf.argmax(y, 1))
         accuracy = tf.reduce_mean(tf.cast(was_correct, tf.float32))
 
         reinforce_step = tf.train.GradientDescentOptimizer(1e-2).minimize(

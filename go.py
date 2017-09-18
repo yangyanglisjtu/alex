@@ -14,7 +14,7 @@ import numpy as np
 
 # Represent a board as a numpy array, with 0 empty, 1 is black, -1 is white.
 # This means that swapping colors is as simple as multiplying array by -1.
-WHITE, EMPTY, BLACK, UNKNOW = range(-1, 3)
+WHITE,EMPTY,BLACK= range(-1, 2)
 
 class PlayerMove(namedtuple('PlayerMove', ['color', 'move'])): pass
 
@@ -22,15 +22,13 @@ class PlayerMove(namedtuple('PlayerMove', ['color', 'move'])): pass
 N = None
 ALL_COORDS = []
 EMPTY_BOARD = None
-NEIGHBORS = {}
-DIAGONALS = {}
 
 def set_board_size(n):
     '''
     Hopefully nobody tries to run both 9x9 and 19x19 game instances at once.
     Also, never do "from go import N, W, ALL_COORDS, EMPTY_BOARD".
     '''
-    global N, ALL_COORDS, EMPTY_BOARD, NEIGHBORS, DIAGONALS
+    global N, ALL_COORDS, EMPTY_BOARD
     if N == n: return
     N = n
     ALL_COORDS = [(i, j) for i in range(n) for j in range(n)]
@@ -38,8 +36,6 @@ def set_board_size(n):
     def check_bounds(c):
         return c[0] % n == c[0] and c[1] % n == c[1]
 
-    NEIGHBORS = {(x, y): list(filter(check_bounds, [(x+1, y), (x-1, y), (x, y+1), (x, y-1)])) for x, y in ALL_COORDS}
-    DIAGONALS = {(x, y): list(filter(check_bounds, [(x+1, y+1), (x+1, y-1), (x-1, y+1), (x-1, y-1)])) for x, y in ALL_COORDS}
 
 def place_stones(board, color, stones):
     for s in stones:

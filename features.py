@@ -1,21 +1,7 @@
 '''
-Features used by AlphaGo, in approximate order of importance.
+Features used by AlphaMao, in approximate order of importance.
 Feature                 # Notes
-Stone colour            3 Player stones; oppo. stones; empty  
-Ones                    1 Constant plane of 1s 
-    (Because of convolution w/ zero-padding, this is the only way the NN can know where the edge of the board is!!!)
-Turns since last move   8 How many turns since a move played
-Liberties               8 Number of liberties
-Capture size            8 How many opponent stones would be captured
-Self-atari size         8 How many own stones would be captured
-Liberties after move    8 Number of liberties after this move played
-ladder capture          1 Whether a move is a successful ladder cap
-Ladder escape           1 Whether a move is a successful ladder escape
-Sensibleness            1 Whether a move is legal + doesn't fill own eye
-Zeros                   1 Constant plane of 0s
-
-All features with 8 planes are 1-hot encoded, with plane i marked with 1 
-only if the feature was equal to i. Any features >= 8 would be marked as 8.
+Stone colour            5 Player player1; player2; player3;player4;empty
 '''
 
 import numpy as np
@@ -23,7 +9,7 @@ import go
 
 def stone_color_feature(position):
     board = position.board
-    features = np.zeros([go.N, go.N, 3], dtype=np.uint8)
+    features = np.zeros([go.N, go.N, 5], dtype=np.uint8)
     if position.to_play == go.BLACK:
         features[board == go.BLACK, 0] = 1
         features[board == go.WHITE, 1] = 1

@@ -21,6 +21,7 @@ class GreedyPolicyPlayerMixin:
 
     def suggest_move(self, position):
         move_probabilities = self.policy_network.run(position)
+        //fuyiqun 通过上面这个move_probalilities，添加你的卷积函数选子操作
         return select_most_likely(position, move_probabilities)
 
 

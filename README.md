@@ -71,7 +71,7 @@ Supervised learning (policy network)
 ------------------------------------
 With the preprocessed SGF data (default output directory is `./processed_data/`), you can train the policy network.
 ```
-python main.py train processed_data/ --save-file=/tmp/savedmodel --epochs=1 --logdir=logs/my_training_run
+python main.py train processed_data/ --save-file=/tmp/saved_models --epochs=1 --logdir=logs/my_training_run
 ```
 
 As the network is trained, the current model will be saved at `--save-file`. If you reexecute the same command, the network will pick up training where it left off.

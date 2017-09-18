@@ -39,6 +39,7 @@ def get_positions_from_sgf(file):
 def split_test_training(positions_w_context, est_num_positions):
     print("Estimated number of chunks: %s" % (est_num_positions // CHUNK_SIZE), file=sys.stderr)
     desired_test_size = 10**5
+    print("est_num_positions:%d"%est_num_positions)
     if est_num_positions < 2 * desired_test_size:
         positions_w_context = list(positions_w_context)
         test_size = len(positions_w_context) // 3
