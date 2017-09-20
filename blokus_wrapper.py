@@ -59,7 +59,7 @@ def make_alphablokus_instance(strategy_name, read_file):
     n = PolicyNetwork(use_cpu=True)
     n.initialize_variables(read_file)
     instance = GreedyPolicyPlayer(n)
-    #gtp_engine = gtp.Engine(instance)
+    instance.get_move();
     return instance
 
 

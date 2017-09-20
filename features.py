@@ -7,16 +7,20 @@ Stone colour            5 Player player1; player2; player3;player4;empty
 import numpy as np
 import go
 
+def planes(num_planes):
+    def deco(f):
+        f.planes = num_planes
+        return f
+    return deco
+
+@planes(3)
 def stone_color_feature(position):
     board = position.board
-    features = np.zeros([go.N, go.N, 5], dtype=np.uint8)
-    if position.to_play == go.BLACK:
-        features[board == go.BLACK, 0] = 1
-        features[board == go.WHITE, 1] = 1
-    else:
-        features[board == go.WHITE, 0] = 1
-        features[board == go.BLACK, 1] = 1
-
+    features = np.zeros([go.N, go.N, 3], dtype=np.uint8)
+    #if position.to_play == go.BLACK:
+    ##    features[board == go.WHITE, 1] = 1#else:
+    features[board == go.BLACK, 0] = 1
+    features[board == go.WHITE, 1] = 1
     features[board == go.EMPTY, 2] = 1
     return features
 

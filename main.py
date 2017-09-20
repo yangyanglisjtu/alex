@@ -24,30 +24,7 @@ def blokus(strategy, read_file=None):
     if engine is None:
         sys.stderr.write("Unknown strategy")
         sys.exit()
-    sys.stderr.write("alphamao is ready\n")
-    #sys.stderr.flush()
 
-    #while not engine.disconnect:
-        #inpt = input()
-        # handle either single lines at a time
-        # or multiple commands separated by '\n'
-        #try:
-            #cmd_list = inpt.split("\n")
-        #except:
-            #cmd_list = [inpt]
-        #for cmd in cmd_list:
-            #engine_reply = engine.send(cmd)
-            #sys.stdout.write(engine_reply)
-            #sys.stdout.flush()
-
-#def blokus(read_file=None):
-    #begin_game(read_file)
-    # engine = make_gtp_instance(read_file)
-    #//if engine is None:
-    ##//    sys.stderr.write("Unknown strategy")
-    #//    sys.exit()
-    #sys.stderr.write("GTP engine ready\n")
-    #sys.stderr.flush()
 
 def preprocess(*data_sets, processed_dir="processed_data"):
     processed_dir = os.path.join(os.getcwd(), processed_dir)
@@ -70,8 +47,7 @@ def preprocess(*data_sets, processed_dir="processed_data"):
         train_dataset.write(train_filename)
     print("%s chunks written" % (i+1))
 
-def train(processed_dir, save_file=None, epochs=10, logdir=None, checkpoint_freq=10000):
-    test_dataset = DataSet.read(os.path.join(processed_dir, "test.chunk.gz"))
+def train(processed_dir,playerId ,save_file=None, epochs=10, logdir=None, checkpoint_freq=10000):
     train_chunk_files = [os.path.join(processed_dir, fname) 
         for fname in os.listdir(processed_dir)
         if TRAINING_CHUNK_RE.match(fname)]
@@ -83,14 +59,13 @@ def train(processed_dir, save_file=None, epochs=10, logdir=None, checkpoint_freq
         n.initialize_variables(None)
     if logdir is not None:
         n.initialize_logging(logdir)
-    last_save_checkpoint = 0
+    #last_save_checkpoint = 0
     for i in range(epochs):
         random.shuffle(train_chunk_files)
         for file in train_chunk_files:
             print("Using %s" % file)
             train_dataset = DataSet.read(file)
             train_dataset.shuffle()
-            #with timer("training"):
             n.train(train_dataset)
             n.save_variables(save_file)
             ##    with timer("test set evaluation"):
